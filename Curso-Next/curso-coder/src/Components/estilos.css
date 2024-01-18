@@ -1,0 +1,82 @@
+.hola {
+    box-shadow: 0 0 10px #a945c7, 0 0 20px #a945c7, 0 0 40px #a945c7;
+    background-color: #a945c7;
+    animation: Cambia linear 5s infinite;
+}
+@keyframes Cambia{
+    0%{
+        box-shadow: 0 0 10px #a945c7, 0 0 20px #a945c7, 0 0 40px #a945c7;
+    }
+    50%{
+        box-shadow: 0 0 50px blue, 0 0 50px blue, 0 0 80px blue;
+    }
+    100%{
+            box-shadow: 0 0 10px #a945c7, 0 0 20px #a945c7, 0 0 40px #a945c7;
+        
+    }
+}
+
+.head {
+    height: 8em;
+}
+
+.inside {
+    width: 90%;
+    align-items: center;
+}
+
+
+.shadow:hover {
+    box-shadow: 0 0 10px #a945c7, 0 0 20px #a945c7, 0 0 40px #a945c7;
+    background-color: #a945c7c9;
+    border-radius: 10px;
+    border: none;
+    outline: none; 
+    padding: 10px;
+    transition: all .5s;
+}
+
+.Salida{
+    animation: salir ease .5s;
+}
+@keyframes salir{
+    0%{
+        padding: 10px;
+    }
+    100%{
+        padding: 0px;
+    }
+}
+
+
+
+
+
+/*-- Cartas --*/
+.card{
+    transition: .5s all;
+}
+.cartaDevuelta{
+    position: absolute;
+    backface-visibility: hidden;
+    overflow: hidden;
+    transform: rotateY(180deg)  ;
+    transition: .5s all;
+}
+
+.Resolver{
+    transform: rotateY(360deg)
+}
+.Resolver2{
+    transform: rotateY(180deg)
+}
+/*--
+.CardGeneral:hover .card{
+    transform: rotateY(180deg)
+}
+
+.CardGeneral:hover .cartaDevuelta{
+    transform: rotateY(360deg)
+}
+
+--*/
