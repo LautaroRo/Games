@@ -17,7 +17,7 @@
 }
 
 .head {
-    height: 8em;
+    height: 10em;
 }
 
 .inside {
@@ -64,19 +64,17 @@
     transition: .5s all;
 }
 
-.Resolver{
+.Resolver,
+.Finish{
     transform: rotateY(360deg)
 }
-.Resolver2{
-    transform: rotateY(180deg)
-}
-/*--
-.CardGeneral:hover .card{
+.Resolver2,
+.Finish2{
     transform: rotateY(180deg)
 }
 
-.CardGeneral:hover .cartaDevuelta{
-    transform: rotateY(360deg)
-}
 
---*/
+
+.modos{
+    height: 13em;
+}
