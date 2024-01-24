@@ -1,6 +1,8 @@
 "use client"
 import React from 'react'
 import "./estilos.css"
+import Link from 'next/link'
+
 const Header = () => {
 
     const Salir = (e) => {
@@ -31,7 +33,7 @@ const Header = () => {
                         <h1 className='flex align-middle text-2xl text-fuchsia-700'>Tienda</h1>
                         <nav>
                             <ul className='flex'>
-                                <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'>Inicio</li>
+                                <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'><Link href={"/app/BlackJack"}>Inicio</Link></li>
                                 <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'>Producto</li>
                                 <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'>Nosotros</li>
                             </ul>

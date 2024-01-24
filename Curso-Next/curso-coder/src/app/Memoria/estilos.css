@@ -1,0 +1,26 @@
+/*-- Cartas --*/
+.card{
+    transition: .5s all;
+}
+.cartaDevuelta{
+    position: absolute;
+    backface-visibility: hidden;
+    overflow: hidden;
+    transform: rotateY(180deg)  ;
+    transition: .5s all;
+}
+
+.Resolver,
+.Finish{
+    transform: rotateY(360deg)
+}
+.Resolver2,
+.Finish2{
+    transform: rotateY(180deg)
+}
+
+
+
+.modos{
+    height: 13em;
+}
