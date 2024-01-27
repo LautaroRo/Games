@@ -1,20 +1,56 @@
 "use client"
-import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import Tablero from "./../../Assets/Tablero.jpeg"
+
 const Blackjack = () => {
     const [Crupier, setCrupier] = useState(0)
     const [Jugador, setJugador] = useState(0)
     const [Start, setStart] = useState(false)
-    const Valor = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Q", "J", "K", "A"]
+    const [Cartas, setCartas] = useState([])
+
+
+
+    useEffect(() => {
+
+        const TraerCartas = async () => {
+
+            try {
+                const api = await fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
+                const data = await api.json()
+
+                const id = data?.deck_id
+
+                const cartas = await fetch(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=52`)
+                const cartasjson = await cartas.json()
+                let info = []
+
+                for(let i = 0; cartasjson?.cards?.length > i; i++){
+
+                    let valores = {
+                        Imagen: cartasjson?.cards[i]?.image,
+                        Valor: ["KING", "QUEEN", "JACK", "ACE"].includes(cartasjson?.cards[i]?.value)
+                        ? cartasjson?.cards[i]?.value.toString()
+                        : parseInt(cartasjson?.cards[i]?.value)
+                    }
+                    info.push(valores)
+                }
+                setCartas(info)
+            }
+            catch {
+                console.log(error)
+            }
+
+        }
+        TraerCartas()
+
+    }, [])
 
 
     const Random = (e) => {
         e.preventDefault()
-        const indiceAleatorio = Math.floor(Math.random() * Valor.length);
-        const carta = Valor[indiceAleatorio];
+        const indiceAleatorio = Math.floor(Math.random() * Cartas.length);
+        const carta = Cartas[indiceAleatorio];
 
-        if (carta === "Q" || carta === "J" || carta === "K") {
+        if (carta === "King" || carta === "JACK" || carta === "QUEEN") {
             setJugador(Valores => Valores + 10)
         }
 
@@ -29,41 +65,73 @@ const Blackjack = () => {
         let valoresSeleccionados = []
         for (let i = 0; 4 > i; i++) {
 
-            const indiceAleatorio = Math.floor(Math.random() * Valor.length);
-            const carta = Valor[indiceAleatorio];
+            const indiceAleatorio = Math.floor(Math.random() * Cartas.length);
+            const carta = Cartas[indiceAleatorio];
+            if (carta?.Valor === "KING" || carta?.Valor === "JACK" || carta?.Valor === "QUEEN") {
+                let valor = {
+                    Valor: 10,
+                    Imagen: carta?.Imagen
+                }
+                valoresSeleccionados.push(valor)
+            }
+            if (typeof carta?.Valor === 'number') {
 
-            if (carta === "Q" || carta === "J" || carta === "K") {
-                let diez = 10
-                valoresSeleccionados.push(diez)
+                let valor = {
+                    Valor: carta?.Valor,
+                    Imagen: carta?.Imagen
+                }
+                valoresSeleccionados.push(valor)
+
             }
-            if (typeof carta === 'number') {
-                valoresSeleccionados.push(carta)
-            }
-            if (carta === "A") {
-                valoresSeleccionados.push("A")
+            if (carta?.Valor === "ACE") {
+
+                valoresSeleccionados.push("ACE")
+
             }
         }
 
-        if (valoresSeleccionados[0] !== "A") {
-            setJugador(Valores => Valores + valoresSeleccionados[0])
+
+
+        if (valoresSeleccionados[0] !== "ACE") {
+
+            let valor = {
+                Valor: valoresSeleccionados[0]?.Valor,
+                Imagen: valoresSeleccionados[0]?.Imagen,
+            }
+            console.log(valoresSeleccionados[0])
+            setJugador(valor)
+
         } else {
 
-            setJugador(Valores => Valores + 11)
+            let valor = {
+                Valor: 11,
+                Imagen: valoresSeleccionados[0]?.Imagen,
+            }
+            setJugador(valor)
         }
 
 
-        if (valoresSeleccionados[1] !== "A") {
+        if (valoresSeleccionados[1] !== "ACE") {
             setTimeout(() => {
-                setCrupier(Valores => Valores + valoresSeleccionados[1])
+                let valor = {
+                    Valor: valoresSeleccionados[1]?.Valor,
+                    Imagen: valoresSeleccionados[1]?.Imagen,
+                }
+                setCrupier(valor)
             }, 1000);
         } else {
 
             setTimeout(() => {
-                setCrupier(Valores => Valores + 11)
+                let valor = {
+                    Valor: 11,
+                    Imagen: valoresSeleccionados[1]?.Imagen,
+                }
+                setCrupier(valor)
             }, 1000);
         }
+        /*--
 
-        if (valoresSeleccionados[2] !== "A") {
+        if (valoresSeleccionados[2] !== "ACE") {
             setTimeout(() => {
                 setJugador(Valores => Valores + valoresSeleccionados[2])
             }, 2000);
@@ -77,7 +145,7 @@ const Blackjack = () => {
         }
 
 
-        if (valoresSeleccionados[3] !== "A") {
+        if (valoresSeleccionados[3] !== "ACE") {
             setTimeout(() => {
                 setCrupier(Valores => Valores + valoresSeleccionados[3])
             }, 3000);
@@ -88,9 +156,11 @@ const Blackjack = () => {
                 setCrupier(Valores => Valores + 1)
             }
         }
+        --*/
+        
     }
 
-
+console.log(Jugador)
     return (
         <div className='flex flex-col justify-center items-center' style={{
             background: "url(https://i.pinimg.com/originals/fc/98/0b/fc980b6ec648175e3c8ac9e9f1ed57f2.jpg)",
@@ -101,8 +171,32 @@ const Blackjack = () => {
             height: "100vh"
         }}>
             <div className={Start ? "hidden" : 'flex items-center w-full justify-center'}>
-                <button className='flex w-48 h-16 bg-green-200 justify-center items-center' style={{ color: "black", borderRadius:"30px" }} onClick={Comenzar}>Jugar</button>
+                <button className='flex w-48 h-16 bg-green-200 justify-center items-center' style={{ color: "black", borderRadius: "30px" }} onClick={Comenzar}>Jugar</button>
             </div>
+
+
+            {
+                Start === true
+                    ?
+                    
+                    <div className='flex h-full flex-col w-full items-center'>
+
+                        <div className='my-16'>
+                            {Crupier?.Valor}
+                        </div>
+
+
+                        <div style={{ bottom: "0" }} className='absolute my-16'>
+                            {Jugador?.Valor}
+                            <img src={Jugador?.Imagen}></img>
+                        </div>
+                    </div>
+                    
+                    :
+                    null
+
+            }
+
 
         </div>
     )
