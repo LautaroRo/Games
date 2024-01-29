@@ -1,0 +1,6 @@
+
+.Oculta{
+    backface-visibility: hidden;
+    overflow: hidden;
+    transform: rotateY(180deg)  ;
+}
