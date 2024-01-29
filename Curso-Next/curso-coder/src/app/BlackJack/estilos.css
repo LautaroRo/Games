@@ -4,3 +4,13 @@
     overflow: hidden;
     transform: rotateY(180deg)  ;
 }
+
+.shadow:hover {
+    box-shadow: 0 0 10px #a945c7, 0 0 20px #a945c7, 0 0 40px #a945c7;
+    background-color: #a945c7c9;
+    border-radius: 10px;
+    border: none;
+    outline: none; 
+    padding: 10px;
+    transition: all .5s;
+}
