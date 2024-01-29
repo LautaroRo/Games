@@ -19,7 +19,7 @@ const Header = () => {
 
     return (
         <>
-            <div className='w-full p-20'>
+            <div className='w-full p-12'>
                 <header className='flex w-full bg-black relative align-middle justify-center head'>
 
                     {/*-Lineas fluor--*/}
@@ -33,8 +33,8 @@ const Header = () => {
                         <h1 className='flex align-middle text-2xl text-fuchsia-700'>Tienda</h1>
                         <nav>
                             <ul className='flex'>
-                                <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'><Link href={"/app/BlackJack"}>Inicio</Link></li>
-                                <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'>Producto</li>
+                                <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'><Link href={"/"}>Inicio</Link></li>
+                                <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'>Informacion</li>
                                 <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'>Nosotros</li>
                             </ul>
                         </nav>

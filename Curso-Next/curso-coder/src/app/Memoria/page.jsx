@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import "./estilos.css"
+import Header from '@/Components/Header'
 
 const Title = () => {
 
@@ -11,41 +12,77 @@ const Title = () => {
     const [Valor, setValor] = useState([])
     const [Count, setCount] = useState(1)
     const [Guardado, setGuardado] = useState()
+    const [Mezclar, setMezclar] = useState(true)
+    const [Activar, setActivar] = useState(false)
+    const [SegundoCount, setSegundoCount] = useState(0)
 
 
-    useEffect(() => {
-        const traerTodasPeliculas = async () => {
-            let MejoresPeliculas = []
 
-            const numero = Math.floor(Math.random() * 10) + 1
+    const traerTodasPeliculas = async () => {
+        const carts = document.querySelectorAll(".Finish");
+        const carts2 = document.querySelectorAll(".Finish2");
+        const carts3 = document.querySelectorAll(".Resolver");
+        const carts4 = document.querySelectorAll(".Resolver2");
+        carts.forEach(cart => {
+            cart.classList.remove("Finish");
+        });
 
 
-            let urlMejoresPeliculas = `${API}/movie/top_rated?api_key=${API_KEY}&page=${numero}`;
-            const responseMejoresPeliculas = await fetch(urlMejoresPeliculas)
-            const dataMejoresPeliculas = await responseMejoresPeliculas.json()
+        carts2.forEach(cart => {
+            cart.classList.remove("Finish2");
+        });
 
-            for (let j = 0; 6 > j; j++) {
-                let img = dataMejoresPeliculas.results[j].poster_path
 
-                const Imagenes = `https://image.tmdb.org/t/p/original${img}`;
-                const name = dataMejoresPeliculas.results[j].title
+        carts3.forEach(cart => {
+            cart.classList.remove("Resolver");
+        });
 
-                let info = {
-                    Nombre: name,
-                    Foto: Imagenes,
-                }
 
-                MejoresPeliculas.push(info)
+        carts4.forEach(cart => {
+            cart.classList.remove("Resolver2");
+        });
+
+
+        setActivar(false)
+        let MejoresPeliculas = []
+
+        const numero = Math.floor(Math.random() * 10) + 1
+
+
+        let urlMejoresPeliculas = `${API}/movie/top_rated?api_key=${API_KEY}&page=${numero}`;
+        const responseMejoresPeliculas = await fetch(urlMejoresPeliculas)
+        const dataMejoresPeliculas = await responseMejoresPeliculas.json()
+
+        for (let j = 0; 6 > j; j++) {
+            let img = dataMejoresPeliculas.results[j].poster_path
+
+            const Imagenes = `https://image.tmdb.org/t/p/original${img}`;
+            const name = dataMejoresPeliculas.results[j].title
+
+            let info = {
+                Nombre: name,
+                Foto: Imagenes,
             }
 
-            setMovies(MejoresPeliculas)
+            MejoresPeliculas.push(info)
         }
+
+        setMovies(MejoresPeliculas)
+
+    }
+
+    useEffect(() => {
+
         traerTodasPeliculas()
+
+        setTimeout(() => {
+            setMezclar(false)
+        }, 3000);
     }, [])
 
 
 
-    useEffect(() => {
+    const mezclar = () => {
         setValor([])
 
         const informacionDuplicada = Movies.concat(Movies);
@@ -57,7 +94,11 @@ const Title = () => {
         })).sort(() => Math.random() - 0.5);
 
         setValor(shuffledCards);
+    }
 
+
+    useEffect(() => {
+        mezclar()
     }, [Movies])
 
 
@@ -87,19 +128,21 @@ const Title = () => {
                 DivFoto?.classList?.add("Resolver");
             }
 
-            setTimeout(() => {
-                if (Count === 2 && String(Guardado?.Nombre) === String(elementoFiltrado?.Nombre)) {
 
-                    if (e?.target && DivFoto) {
-                        e?.target?.classList?.add("Finish2");
-                        DivFoto?.classList?.add("Finish");
-                        DivFoto2?.classList?.add("Finish");
-                        setGuardado(null)
-                        setCount(1);
-                    }
+            if (Count === 2 && String(Guardado?.Nombre) === String(elementoFiltrado?.Nombre)) {
+
+                if (e?.target && DivFoto) {
+                    e?.target?.classList?.add("Finish2");
+                    DivFoto?.classList?.add("Finish");
+                    DivFoto2?.classList?.add("Finish");
+                    setGuardado(null)
+                    setCount(1);
+                    setSegundoCount(prevCount => prevCount + 1)
+
                 }
-
-                else if (Count === 2 && String(Guardado?.Nombre) !== String(elementoFiltrado?.Nombre)) {
+            }
+            setTimeout(() => {
+                if (Count === 2 && String(Guardado?.Nombre) !== String(elementoFiltrado?.Nombre)) {
                     cartaMover?.forEach((carta) => {
                         carta.classList.remove("Resolver2");
                     });
@@ -112,8 +155,9 @@ const Title = () => {
 
                 }
 
-            }, 2000);
-            
+            }, 1000);
+
+
         } else {
             console.log("No")
         }
@@ -121,13 +165,17 @@ const Title = () => {
 
     };
 
-
-
+    useEffect(() => {
+        if (SegundoCount === 6) {
+            setActivar(true)
+        }
+    }, [SegundoCount])
     return (
-
+<>
+<Header/>
         <div className='flex flex-wrap flex-row w-full align-middle justify-center h-full'>
             {
-                Valor?.length > 0 && Valor.length < 20
+                Valor?.length > 0 && Valor.length < 20 && !Mezclar
                     ?
                     <>
                         {Valor.map((Personaje) => {
@@ -145,12 +193,20 @@ const Title = () => {
 
                     </>
                     :
-                    null
+                    <div>Mezclando Cartas</div>
             }
 
-
+            {
+                !Mezclar && Activar
+                    ?
+                    <button onClick={traerTodasPeliculas}>Jugar de nuevo?</button>
+                    :
+                    null
+            }
         </div>
+        </>
     )
+
 }
 
 export default Title

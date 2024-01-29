@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import "./estilos.css"
+import Header from '@/Components/Header'
 
 const Blackjack = () => {
     const [Crupier, setCrupier] = useState([])
@@ -9,8 +10,12 @@ const Blackjack = () => {
     const [FotosCrupier, setFotosCrupier] = useState([])
     const [Start, setStart] = useState(false)
     const [Cartas, setCartas] = useState([])
+    const [Mezclar, setMezclar] = useState(true)
 
     useEffect(() => {
+        setTimeout(() => {
+            setMezclar(false)
+        }, 2500);
 
         const TraerCartas = async () => {
 
@@ -207,23 +212,27 @@ const Blackjack = () => {
             if (Crupier + 11 <= 21) {
 
                 let valor = {
-                    Valor: valoresSeleccionados[3]?.Valor + 11
+                    Valor: valoresSeleccionados[3]?.Valor + 11,
+                    ValorIncognito: valoresSeleccionados[1]?.Valor
                 }
                 setCrupier([valor])
 
                 let foto = {
-                    Imagen: valoresSeleccionados[3].Imagen
+                    Imagen: valoresSeleccionados[3].Imagen,
+                    Id: "Oculto"
                 }
 
                 setFotosCrupier(prevFotos => [...prevFotos, foto])
             } else {
                 let valor = {
-                    Valor: valoresSeleccionados[3]?.Valor + 1
+                    Valor: valoresSeleccionados[3]?.Valor + 1,
+                    ValorIncognito: valoresSeleccionados[1]?.Valor
                 }
                 setCrupier([valor])
 
                 let foto = {
-                    Imagen: valoresSeleccionados[3].Imagen
+                    Imagen: valoresSeleccionados[3].Imagen,
+                    Id: "Oculto"
                 }
 
                 setFotosCrupier(prevFotos => [...prevFotos, foto])
@@ -234,68 +243,90 @@ const Blackjack = () => {
 
     console.log(Crupier)
     return (
-        <div className='flex flex-col justify-center items-center' style={{
-            background: "url(https://i.pinimg.com/originals/fc/98/0b/fc980b6ec648175e3c8ac9e9f1ed57f2.jpg)",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            width: "100%",
-            height: "100vh"
-        }}>
-            <div className={Start ? "hidden" : 'flex items-center w-full justify-center'}>
-                <button className='flex w-48 h-16 bg-green-200 justify-center items-center' style={{ color: "black", borderRadius: "30px" }} onClick={Comenzar}>Jugar</button>
-            </div>
 
-
+        <>
+            <Header></Header>
             {
-                Start === true
+                !Mezclar
                     ?
+                    <div className='flex flex-col justify-center items-center' style={{
+                        background: "url(https://i.pinimg.com/originals/fc/98/0b/fc980b6ec648175e3c8ac9e9f1ed57f2.jpg)",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        width: "100%",
+                        height: "100vh"
+                    }}>
+                        <div className={Start ? "hidden" : 'flex items-center w-full justify-center'}>
+                            <button className='flex w-48 h-16 bg-green-200 justify-center items-center' style={{ color: "black", borderRadius: "30px" }} onClick={Comenzar}>Jugar</button>
+                        </div>
 
-                    <div className='flex h-full flex-col w-full items-center'>
 
-                        <div className='my-16 w-full h-52 flex justify-center items-center flex-col'>
-                            <div className='flex flex-row'>
+                        {
+                            Start === true
+                                ?
 
-                                {FotosCrupier.map((jug) => {
-                                    return (
-                                        <div className='flex m-5 flex-row'>
-                                            <img className={jug?.Id ? "flex w-56 h-56 rounded-[10px] absolute" : 'flex w-56 h-56'} src={jug?.Id ? "https://i.pinimg.com/originals/0e/5f/f1/0e5ff160c652d000ebb409a754653d23.jpg" : jug?.Imagen}></img>
-                                            {jug?.Id ? <img className='flex w-56 h-56 rounded-[10px] relative Oculta' src={jug?.Imagen}/> : null}
+                                <div className='flex h-full flex-col w-full items-center'>
+
+                                    <div className='my-16 w-full h-52 flex justify-center items-center flex-col'>
+                                        <div className='flex flex-row'>
+
+                                            {FotosCrupier.map((jug) => {
+                                                return (
+                                                    <div className='flex m-5 flex-row'>
+                                                        <img className={jug?.Id ? "flex w-56 h-56 rounded-[10px] absolute" : 'flex w-56 h-56'} src={jug?.Id ? "https://i.pinimg.com/originals/0e/5f/f1/0e5ff160c652d000ebb409a754653d23.jpg" : jug?.Imagen}></img>
+                                                        {jug?.Id ? <img className='flex w-56 h-56 rounded-[10px] relative Oculta' src={jug?.Imagen} /> : null}
+                                                    </div>
+                                                )
+                                            })}
                                         </div>
-                                    )
-                                })}
-                            </div>
 
 
 
-                            {Crupier.map((cru) => (
-                                <div key={cru?.Valor}>
-                                    <h3>{cru?.ValorPrimero || cru?.ValorIncognito}</h3>
-                                </div>
-                            ))}
-                        </div>
-
-
-                        <div style={{ bottom: "0" }} className='my-16 absolute w-full h-52 flex justify-center items-center'>
-
-
-                            {FotosJugador.map((jug) => {
-                                return (
-                                    <div className='flex m-5'>
-                                        <img className='flex w-56 h-56' src={jug?.Imagen}></img>
+                                        {Crupier.map((cru) => (
+                                            <div key={cru?.Valor}>
+                                                <h3>{cru?.ValorPrimero || cru?.ValorIncognito}</h3>
+                                            </div>
+                                        ))}
                                     </div>
-                                )
-                            })}
-                        </div>
+
+
+                                    <div style={{ bottom: "0" }} className='my-16 absolute w-full h-52 flex justify-center items-center flex-col'>
+
+
+
+                                        {Jugador.map((jug) => {
+                                            return (
+                                                <div >
+                                                    <h3>{jug?.Valor}</h3>
+                                                </div>
+                                            )
+
+                                        })}
+                                        <div className='flex flex-row'>
+                                            {FotosJugador.map((jug) => {
+                                                return (
+                                                    <div className='flex m-5'>
+                                                        <img className='flex w-56 h-56' src={jug?.Imagen}></img>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                :
+                                null
+
+                        }
+
+
                     </div>
-
                     :
-                    null
-
+                    <h2>Cargando Juego</h2>
             }
 
-
-        </div>
+        </>
     )
 }
 
