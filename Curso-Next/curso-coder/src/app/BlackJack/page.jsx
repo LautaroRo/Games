@@ -2,9 +2,12 @@
 import React, { useEffect, useState } from 'react'
 import "./estilos.css"
 import Header from '@/Components/Header'
-
+import { cartas } from '../ApiBlackjack'
 
 const Blackjack = () => {
+
+
+
     const [Crupier, setCrupier] = useState([])
     const [Jugador, setJugador] = useState([])
     const [FotosJugador, setFotosJugador] = useState([])
@@ -15,42 +18,45 @@ const Blackjack = () => {
     const [Decision, setDecision] = useState(false)
     const [Blackjack, setBlackJack] = useState(false)
     
+    const TraerCartas = async () => {
+        
+        try {
+            const cartasConst = await fetch(cartas)
+            const cartasjson = await cartasConst.json()
+
+            console.log(cartasjson)
+            let info = []
+
+            for (let i = 0; cartasjson?.cards?.length > i; i++) {
+
+                let valores = {
+                    Imagen: cartasjson?.cards[i]?.image,
+                    Valor: ["KING", "QUEEN", "JACK", "ACE"].includes(cartasjson?.cards[i]?.value)
+                        ? cartasjson?.cards[i]?.value.toString()
+                        : parseInt(cartasjson?.cards[i]?.value)
+                }
+                info.push(valores)
+            }
+
+            setCartas(info)
+        }
+        catch {
+            console.log(error)
+        }
+
+    }
+
+
     useEffect(() => {
         setTimeout(() => {
             setMezclar(false)
+
         }, 2500);
 
-        const TraerCartas = async () => {
-            try {
-                const api = await fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
-                const data = await api.json()
-
-                const id = data?.deck_id
-
-                const cartas = await fetch(`https://deckofcardsapi.com/api/deck/${id}/draw/?count=52`)
-                const cartasjson = await cartas.json()
-                let info = []
-
-                for (let i = 0; cartasjson?.cards?.length > i; i++) {
-
-                    let valores = {
-                        Imagen: cartasjson?.cards[i]?.image,
-                        Valor: ["KING", "QUEEN", "JACK", "ACE"].includes(cartasjson?.cards[i]?.value)
-                            ? cartasjson?.cards[i]?.value.toString()
-                            : parseInt(cartasjson?.cards[i]?.value)
-                    }
-                    info.push(valores)
-                }
-                setCartas(info)
-            }
-            catch {
-                console.log(error)
-            }
-
-        }
         TraerCartas()
-
     }, [])
+
+
 
 
     const Random = (e) => {
@@ -89,9 +95,6 @@ const Blackjack = () => {
 
     }
 
-    useEffect(()=>{
-        console.log(Jugador)
-    },[Jugador])
 
     const Comenzar = (e) => {
         e.preventDefault()
@@ -330,7 +333,7 @@ const Blackjack = () => {
 
             <Header></Header>
             {
-                !Mezclar
+                !Mezclar && Cartas.length > 0
                     ?
                     <div className='flex flex-col justify-center items-center' style={{
                         background: "url(https://i.pinimg.com/originals/fc/98/0b/fc980b6ec648175e3c8ac9e9f1ed57f2.jpg)",
