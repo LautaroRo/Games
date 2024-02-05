@@ -19,14 +19,14 @@ const Header = () => {
 
     return (
         <>
-            <div className='w-full p-12'>
+            <div className='w-full p-6 cabecera'>
                 <header className='flex w-full bg-black relative align-middle justify-center head'>
 
                     {/*-Lineas fluor--*/}
-                    <div className='absolute h-1 w-full hola rounded-lg'></div>
-                    <div className='absolute left-0 w-1 h-20 hola rounded-lg head'></div>
-                    <div className='absolute bottom-0 w-full h-1 hola rounded-lg'></div>
-                    <div className='absolute right-0 w-1 h-20 hola rounded-lg head' ></div>
+                    <div className='absolute h-1 w-full animacion rounded-lg'></div>
+                    <div className='absolute left-0 w-1 h-20 animacion rounded-lg head'></div>
+                    <div className='absolute bottom-0 w-full h-1 animacion rounded-lg'></div>
+                    <div className='absolute right-0 w-1 h-20 animacion rounded-lg head' ></div>
                     {/*-Lineas fluor--*/}
 
                     <div className='flex justify-between inside'>

@@ -1,4 +1,8 @@
-.hola {
+.cabecera{
+    position: relative;
+    z-index: 2;
+}
+.animacion {
     box-shadow: 0 0 10px #a945c7, 0 0 20px #a945c7, 0 0 40px #a945c7;
     background-color: #a945c7;
     animation: Cambia linear 5s infinite;
@@ -17,7 +21,7 @@
 }
 
 .head {
-    height: 10em;
+    height: 7em;
 }
 
 .inside {

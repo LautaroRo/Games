@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import "./estilos.css"
 import Header from '@/Components/Header'
 
+
 const Blackjack = () => {
     const [Crupier, setCrupier] = useState([])
     const [Jugador, setJugador] = useState([])
@@ -11,14 +12,15 @@ const Blackjack = () => {
     const [Start, setStart] = useState(false)
     const [Cartas, setCartas] = useState([])
     const [Mezclar, setMezclar] = useState(true)
-
+    const [Decision, setDecision] = useState(false)
+    const [Blackjack, setBlackJack] = useState(false)
+    
     useEffect(() => {
         setTimeout(() => {
             setMezclar(false)
         }, 2500);
 
         const TraerCartas = async () => {
-
             try {
                 const api = await fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
                 const data = await api.json()
@@ -50,21 +52,47 @@ const Blackjack = () => {
 
     }, [])
 
-    /*--
-        const Random = (e) => {
-            e.preventDefault()
-            const indiceAleatorio = Math.floor(Math.random() * Cartas.length);
-            const carta = Cartas[indiceAleatorio];
-    
-            if (carta === "King" || carta === "JACK" || carta === "QUEEN") {
-                setJugador(Valores => Valores + 10)
+
+    const Random = (e) => {
+        e.preventDefault()
+        const indiceAleatorio = Math.floor(Math.random() * Cartas.length);
+        const carta = Cartas[indiceAleatorio];
+
+
+        if (carta?.Valor === "King" || carta?.Valor === "JACK" || carta?.Valor === "QUEEN") {
+            const suma = Jugador[0]?.Valor + 10
+
+            let info = {
+                Valor: suma,
             }
-    
-            if (typeof carta === 'number') {
-                setJugador(Valores => Valores + carta)
+            setJugador([info])
+        
+            let foto = {
+                Imagen: carta?.Imagen
             }
+            setFotosJugador([...FotosJugador, foto])
         }
-    --*/
+
+        if (typeof carta?.Valor === 'number') {
+            const suma = Jugador[0]?.Valor + carta?.Valor
+
+
+            let info = {
+                Valor: suma,
+            }
+            setJugador([info])
+            let foto = {
+                Imagen: carta?.Imagen
+            }
+            setFotosJugador([...FotosJugador, foto])
+        }
+
+    }
+
+    useEffect(()=>{
+        console.log(Jugador)
+    },[Jugador])
+
     const Comenzar = (e) => {
         e.preventDefault()
         setStart(true)
@@ -90,13 +118,18 @@ const Blackjack = () => {
 
             }
             if (carta?.Valor === "ACE") {
-                valoresSeleccionados.push("ACE")
+
+                let valor = {
+                    Tipo: "ACE",
+                    Imagen: carta?.Imagen
+                }
+                valoresSeleccionados.push(valor)
             }
         }
 
 
 
-        if (valoresSeleccionados[0] !== "ACE") {
+        if (valoresSeleccionados[0]?.Tipo !== "ACE") {
 
             let valor = {
                 Valor: valoresSeleccionados[0]?.Valor
@@ -114,6 +147,7 @@ const Blackjack = () => {
             }
             setJugador([valor])
 
+
             let foto = {
                 Imagen: valoresSeleccionados[0]?.Imagen
             }
@@ -121,7 +155,7 @@ const Blackjack = () => {
         }
 
 
-        if (valoresSeleccionados[1] !== "ACE") {
+        if (valoresSeleccionados[1]?.Tipo !== "ACE") {
             setTimeout(() => {
                 let valor = {
                     ValorPrimero: valoresSeleccionados[1]?.Valor
@@ -149,26 +183,41 @@ const Blackjack = () => {
         }
 
 
-        if (valoresSeleccionados[2] !== "ACE") {
+        if (valoresSeleccionados[2]?.Tipo !== "ACE") {
             setTimeout(() => {
-                const suma = valoresSeleccionados[2]?.Valor + valoresSeleccionados[0]?.Valor
-                let valor = {
-                    Valor: suma,
+                if (valoresSeleccionados[0]?.Tipo !== "ACE") {
+                    const suma = valoresSeleccionados[2]?.Valor + valoresSeleccionados[0]?.Valor;
+                    let valor = {
+                        Valor: suma,
+                    }
+                    setJugador([valor])
+
+                    let foto = {
+                        Imagen: valoresSeleccionados[2].Imagen
+                    }
+
+                    setFotosJugador(prevFotos => [...prevFotos, foto])
+                } else {
+                    const suma = valoresSeleccionados[2]?.Valor + 11;
+            
+                    let valor = {
+                        Valor: suma,
+                    }
+                    setJugador([valor])
+
+                    let foto = {
+                        Imagen: valoresSeleccionados[2].Imagen
+                    }
+
+                    setFotosJugador(prevFotos => [...prevFotos, foto])
                 }
-                setJugador([valor])
-
-                let foto = {
-                    Imagen: valoresSeleccionados[2].Imagen
-                }
-
-                setFotosJugador(prevFotos => [...prevFotos, foto])
-
             }, 2000);
         } else {
+            if (valoresSeleccionados[0]?.Valor !== "ACE") {
 
-            if (Jugador?.Valor + 11 <= 21) {
+                const suma = valoresSeleccionados[0]?.Valor + 11;
                 let valor = {
-                    Valor: valoresSeleccionados[2]?.Valor + 11
+                    Valor: suma
                 }
                 setJugador([valor])
 
@@ -177,9 +226,12 @@ const Blackjack = () => {
                 }
 
                 setFotosJugador(prevFotos => [...prevFotos, foto])
+
             } else {
+
+                const suma = Jugador[0]?.Valor + 1;
                 let valor = {
-                    Valor: valoresSeleccionados[2]?.Valor + 1
+                    Valor: suma
                 }
                 setJugador([valor])
 
@@ -188,13 +240,50 @@ const Blackjack = () => {
                 }
 
                 setFotosJugador(prevFotos => [...prevFotos, foto])
+
+
             }
         }
 
-
-        if (valoresSeleccionados[3] !== "ACE") {
+        if (valoresSeleccionados[3]?.Tipo !== "ACE") {
             setTimeout(() => {
-                const suma = valoresSeleccionados[3]?.Valor + valoresSeleccionados[1]?.Valor
+
+                if(valoresSeleccionados[1] !== "ACE"){
+                    const suma = valoresSeleccionados[3]?.Valor + valoresSeleccionados[1]?.Valor
+                    let valor = {
+                        Valor: suma,
+                        ValorIncognito: valoresSeleccionados[1]?.Valor
+                    }
+                    setCrupier([valor])
+    
+                    let foto = {
+                        Imagen: valoresSeleccionados[3].Imagen,
+                        Id: "Oculto"
+                    }
+    
+                    setFotosCrupier(prevFotos => [...prevFotos, foto])
+                }else{
+                    const suma = valoresSeleccionados[3]?.Valor + 11
+                    let valor = {
+                        Valor: suma,
+                        ValorIncognito: 11
+                    }
+                    setCrupier([valor])
+    
+                    let foto = {
+                        Imagen: valoresSeleccionados[3].Imagen,
+                        Id: "Oculto"
+                    }
+    
+                    setFotosCrupier(prevFotos => [...prevFotos, foto])
+                }
+
+
+            }, 3000);
+        } else {
+            if (valoresSeleccionados[1] !== "ACE") {
+
+                const suma = valoresSeleccionados[1]?.Valor + 11
                 let valor = {
                     Valor: suma,
                     ValorIncognito: valoresSeleccionados[1]?.Valor
@@ -207,26 +296,10 @@ const Blackjack = () => {
                 }
 
                 setFotosCrupier(prevFotos => [...prevFotos, foto])
-            }, 3000);
-        } else {
-            if (Crupier + 11 <= 21) {
-
-                let valor = {
-                    Valor: valoresSeleccionados[3]?.Valor + 11,
-                    ValorIncognito: valoresSeleccionados[1]?.Valor
-                }
-                setCrupier([valor])
-
-                let foto = {
-                    Imagen: valoresSeleccionados[3].Imagen,
-                    Id: "Oculto"
-                }
-
-                setFotosCrupier(prevFotos => [...prevFotos, foto])
             } else {
                 let valor = {
-                    Valor: valoresSeleccionados[3]?.Valor + 1,
-                    ValorIncognito: valoresSeleccionados[1]?.Valor
+                    Valor: 12,
+                    ValorIncognito: 11
                 }
                 setCrupier([valor])
 
@@ -237,14 +310,24 @@ const Blackjack = () => {
 
                 setFotosCrupier(prevFotos => [...prevFotos, foto])
             }
+        }
+
+        if (valoresSeleccionados[0]?.Valor + valoresSeleccionados[2]?.Valor === 21) {
+            setBlackJack(true)
+        } else {
+            setTimeout(() => {
+                setDecision(true)
+            }, 4000);
+
         }
 
     }
+    console.log(Jugador[0]?.Valor,Jugador[1]?.Valor)
 
-    console.log(Crupier)
     return (
 
         <>
+
             <Header></Header>
             {
                 !Mezclar
@@ -255,7 +338,9 @@ const Blackjack = () => {
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                         width: "100%",
-                        height: "100vh"
+                        height: "100vh",
+                        position: "fixed",
+                        top: "0"
                     }}>
                         <div className={Start ? "hidden" : 'flex items-center w-full justify-center'}>
                             <button className='flex w-48 h-16 bg-green-200 justify-center items-center' style={{ color: "black", borderRadius: "30px" }} onClick={Comenzar}>Jugar</button>
@@ -266,7 +351,7 @@ const Blackjack = () => {
                             Start === true
                                 ?
 
-                                <div className='flex h-full flex-col w-full items-center'>
+                                <div className='flex flex-col w-full items-center h-[65vh]'>
 
                                     <div className='my-16 w-full h-52 flex justify-center items-center flex-col'>
                                         <div className='flex flex-row'>
@@ -290,6 +375,21 @@ const Blackjack = () => {
                                         ))}
                                     </div>
 
+
+
+
+                                    {!Decision
+
+                                        ?
+
+                                        null
+
+                                        :
+
+                                        <div>
+                                            <button onClick={Random}>+</button><h2>-</h2>
+                                        </div>
+                                    }
 
                                     <div style={{ bottom: "0" }} className='my-16 absolute w-full h-52 flex justify-center items-center flex-col'>
 
