@@ -450,7 +450,6 @@ const Blackjack = ({ cartas }) => {
 
 
     useEffect(() => {
-        console.log("ENTOERPIJORFESF")
         if (BlackjackGame) {
             verificar()
         }
