@@ -9,7 +9,7 @@ const Juegos = () => {
 
             <div className='flex w-full align-middle justify-center'>
 
-                <Link href={"/BlackjackMap"}>
+                <Link href={"/BlackJack"}>
                     <div className='flex w-40 h-52 m-14 relative justify-center items-center' style={{ borderRadius: "10px" }}>
 
                         <div className='absolute h-1 w-full animacion rounded-lg arriba'></div>
@@ -23,7 +23,7 @@ const Juegos = () => {
                 </Link>
 
 
-                <Link href={"/MemoriaMap"}>
+                <Link href={"/Memoria"}>
                     <div className='flex w-40 h-52 m-14 relative justify-center items-center' style={{ borderRadius: "10px" }}>
 
                         <div className='absolute h-1 w-full animacion rounded-lg arriba'></div>
