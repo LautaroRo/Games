@@ -12,11 +12,9 @@ const Blackjack = ({ cartas }) => {
     const [Cartas, setCartas] = useState([])
     const [Mezclar, setMezclar] = useState(true)
     const [Decision, setDecision] = useState(false)
-    const [BlackjackGame, setBlackJack] = useState(false)
     const [Mostrar, setMostrar] = useState(false)
-    const [Inflexion, setInflexion] = useState(false)
 
-    const TraerCartas = async () => {
+    const TraerCartas = () => {
 
         try {
             setCartas(cartas)
@@ -304,6 +302,101 @@ const Blackjack = ({ cartas }) => {
 
         }
     }
+
+
+
+    const TurnoCrupier = () => {
+        setTimeout(() => {
+            const indiceAleatorio = Math.floor(Math.random() * Cartas.length);
+            const carta = Cartas[indiceAleatorio];
+
+            if (carta?.Valor === "King" || carta?.Valor === "JACK" || carta?.Valor === "QUEEN") {
+                const suma = Crupier[0]?.Valor + 10;
+                const nuevaCartaCrupier = { Valor: suma };
+                const nuevaImagenCrupier = { Imagen: carta?.Imagen };
+
+
+                setCrupier([nuevaCartaCrupier]);
+                setFotosCrupier([...FotosCrupier, nuevaImagenCrupier]);
+            } else if (carta?.Valor === "Ace") {
+                let valorAs = 11;
+                const totalCrupier = Crupier.reduce((total, carta) => total + (typeof carta.Valor === 'number' ? carta.Valor : 0), 0);
+
+                if (totalCrupier + valorAs > 21) {
+                    valorAs = 1;
+                }
+                const suma = Crupier[0]?.Valor + valorAs;
+                const nuevaCartaCrupier = { Valor: suma };
+                const nuevaImagenCrupier = { Imagen: carta?.Imagen };
+
+
+                setCrupier([nuevaCartaCrupier]);
+                setFotosCrupier([...FotosCrupier, nuevaImagenCrupier]);
+            } else if (typeof carta?.Valor === 'number') {
+                const suma = Crupier[0]?.Valor + carta?.Valor;
+                const nuevaCartaCrupier = { Valor: suma };
+                const nuevaImagenCrupier = { Imagen: carta?.Imagen };
+
+
+                setCrupier([nuevaCartaCrupier]);
+                setFotosCrupier([...FotosCrupier, nuevaImagenCrupier]);
+            }
+
+        }, 1000);
+    }
+
+    const Plantar = async () => {
+
+        if (Crupier[0].Valor) {
+            for (let i = 0; FotosCrupier.length > i; i++) {
+                delete FotosCrupier[i].Id;
+            }
+
+            let totalCrupier = await Crupier[0]?.Valor
+
+            console.log(totalCrupier)
+
+            if (totalCrupier < 17) {
+                TurnoCrupier()
+            }
+
+            setDecision(false);
+            setMostrar(true);
+        }else{
+            console.log("error")
+        }
+
+
+
+    }
+
+    useEffect(() => {
+
+        let totalCrupier = Crupier[0]?.Valor
+
+        if (totalCrupier < 17 && Mostrar) {
+            TurnoCrupier()
+        }else if(totalCrupier >= 17){
+            verificar()
+        }
+        
+
+    }, [Crupier,FotosCrupier])
+
+
+    useEffect(() => {
+
+        if (Jugador[0]?.Valor > 20) {
+            setTimeout(() => {
+                setDecision(false)
+                Plantar()
+            }, 1000);
+
+        }
+    }, [Jugador])
+
+
+
     useEffect(() => {
 
         setTimeout(() => {
@@ -315,146 +408,35 @@ const Blackjack = ({ cartas }) => {
     }, [])
 
 
-    const TurnoDeCrupier = (e) => {
-        e?.preventDefault()
-        setTimeout(() => {
-            const indiceAleatorio = Math.floor(Math.random() * Cartas.length);
-            const carta = Cartas[indiceAleatorio];
 
-            if (carta?.Valor === "King" || carta?.Valor === "JACK" || carta?.Valor === "QUEEN") {
-                const suma = Crupier[0]?.Valor + 10;
 
-                const nuevaCartaCrupier = { Valor: suma };
 
-                const nuevaImagenCrupier = { Imagen: carta?.Imagen };
-
-                setCrupier([nuevaCartaCrupier]);
-
-                setFotosCrupier([...FotosCrupier, nuevaImagenCrupier]);
-
-            } else if (carta?.Valor === "Ace") {
-
-                let valorAs = 11;
-
-                const totalCrupier = Crupier.reduce((total, carta) => total + (typeof carta.Valor === 'number' ? carta.Valor : 0), 0);
-
-                if (totalCrupier + valorAs > 21) {
-
-                    valorAs = 1;
-                }
-                const suma = Crupier[0]?.Valor + valorAs;
-
-                const nuevaCartaCrupier = { Valor: suma };
-
-                const nuevaImagenCrupier = { Imagen: carta?.Imagen };
-
-                setCrupier([nuevaCartaCrupier]);
-
-                setFotosCrupier([...FotosCrupier, nuevaImagenCrupier]);
-            } else if (typeof carta?.Valor === 'number') {
-
-                const suma = Crupier[0]?.Valor + carta?.Valor;
-
-                const nuevaCartaCrupier = { Valor: suma };
-
-                const nuevaImagenCrupier = { Imagen: carta?.Imagen };
-
-                setCrupier([nuevaCartaCrupier]);
-
-                setFotosCrupier([...FotosCrupier, nuevaImagenCrupier]);
+        const verificar = () => {
+    
+            if (Jugador[0]?.Valor < Crupier[0]?.Valor && Crupier[0]?.Valor < 22) {
+                console.log("Perdiste")
             }
-        }, 1000);
-    }
-
-
-
-    const Plantar = () => {
-        try {
-            setDecision(false)
-            setMostrar(true)
-
-            console.log(Crupier[0].Valor)
-            for (let i = 0; FotosCrupier.length > i; i++) {
-                delete FotosCrupier[i].Id;
+    
+            else if (Jugador[0]?.Valor > Crupier[0]?.Valor && Jugador[0]?.Valor < 22) {
+                console.log("Ganaste")
             }
-            if (Crupier[0].Valor < 17) {
-                TurnoDeCrupier();
-            } else {
-                console.log(false);
+    
+            else if (Jugador[0]?.Valor === Crupier[0]?.Valor) {
+                console.log("Empate")
             }
-        } catch {
-            console.log("error")
+    
+            else if (Jugador[0]?.Valor > Crupier[0]?.Valor && Jugador[0]?.Valor > 21) {
+                console.log("Perdiste")
+            }
+    
+            else if (Jugador[0]?.Valor < Crupier[0]?.Valor && Crupier[0]?.Valor > 21) {
+                console.log("Ganaste")
+            }
+            else if( Jugador[0]?.Valor > 21 ){
+                console.log("Perdiste")
+            }
         }
-
-
-    }
-
-    const verificar = () => {
-
-        if (Jugador[0]?.Valor < Crupier[0]?.Valor && Crupier[0]?.Valor < 22) {
-            console.log("Perdiste")
-        }
-
-        else if (Jugador[0]?.Valor > Crupier[0]?.Valor && Jugador[0]?.Valor < 22) {
-            console.log("Ganaste")
-        }
-
-        else if (Jugador[0]?.Valor === Crupier[0]?.Valor) {
-            console.log("Empate")
-        }
-
-        else if (Jugador[0]?.Valor > Crupier[0]?.Valor && Jugador[0]?.Valor >= 22) {
-            console.log("Perdiste")
-        }
-
-        else if (Jugador[0]?.Valor < Crupier[0]?.Valor && Crupier[0]?.Valor >= 22) {
-            console.log("Ganaste")
-        }
-        else if( Jugador[0]?.Valor > 21 ){
-            console.log("Perdiste")
-        }
-    }
-
-
-    useEffect(() => {
-
-        if (Mostrar && Crupier[0]?.Valor < 17 && !Decision) {
-            TurnoDeCrupier()
-        }
-        else if (Crupier[0]?.Valor >= 17 && Mostrar && !Decision) {
-            setInflexion(true)
-
-        }
-
-
-
-    }, [Crupier])
-
-    useEffect(() => {
-
-        if (Crupier[0]?.Valor > 16 && Inflexion) {
-            setBlackJack(true)
-        }
-    }, [Inflexion])
-    useEffect(() => {
-
-        if (Jugador[0]?.Valor > 20) {
-            setDecision(false)
-            setTimeout(() => {
-                Plantar()
-            }, 1000);
-
-        }
-
-    }, [Jugador])
-
-
-    useEffect(() => {
-        if (BlackjackGame) {
-            verificar()
-        }
-
-    }, [BlackjackGame])
+    
 
     return (
 
