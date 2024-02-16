@@ -1,0 +1,19 @@
+.shadowli:hover {
+    box-shadow: 0 0 10px #918e92, 0 0 20px #918e92, 0 0 40px #918e92;
+    background-color: #918e92;
+    border-radius: 10px;
+    border: none;
+    outline: none; 
+    padding: 10px;
+    transition: all .5s;
+}
+
+.shadowlitwo:hover {
+    box-shadow: 0 0 10px #1c2685, 0 0 20px #1c2685, 0 0 40px #1c2685;
+    background-color: #1c2685;
+    border-radius: 10px;
+    border: none;
+    outline: none; 
+    padding: 10px;
+    transition: all .5s;
+}

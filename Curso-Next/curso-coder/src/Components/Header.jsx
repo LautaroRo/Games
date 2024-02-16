@@ -34,8 +34,8 @@ const Header = () => {
                         <nav>
                             <ul className='flex'>
                                 <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'><Link href={"/"}>Inicio</Link></li>
-                                <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'>Informacion</li>
-                                <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'>Nosotros</li>
+                                <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'><Link href={"/Crearperfil"}>Crear perfil</Link></li>
+                                <li onMouseLeave={Salir} onMouseEnter={Entrar} className='mx-5 cursor-pointer shadow'><Link href={"/IniciarSesion"}>Iniciar Sesion</Link></li>
                             </ul>
                         </nav>
 
