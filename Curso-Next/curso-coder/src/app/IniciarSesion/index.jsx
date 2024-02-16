@@ -81,7 +81,7 @@ const IniciarSesion = () => {
 
                     <li className='mx-5 cursor-pointer shadowlitwo'>
 
-                        <Link href={"/Crearperfil"}>
+                        <Link href={"/CrearMap"}>
                             Crear Perfil
                         </Link>
 

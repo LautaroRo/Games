@@ -92,7 +92,7 @@ const Crearperfil = () => {
 
                     <li className='mx-5 cursor-pointer shadowli'>
 
-                        <Link href={"/IniciarSesion"}>
+                        <Link href={"/IniciarMap"}>
                             Iniciar Sesion
                         </Link>
 
