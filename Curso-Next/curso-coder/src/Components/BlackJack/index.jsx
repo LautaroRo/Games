@@ -347,7 +347,7 @@ const Blackjack = ({ cartas }) => {
 
     const Plantar = async () => {
 
-        if (Crupier[0].Valor) {
+        if (Crupier[0]?.Valor) {
             for (let i = 0; FotosCrupier.length > i; i++) {
                 delete FotosCrupier[i].Id;
             }

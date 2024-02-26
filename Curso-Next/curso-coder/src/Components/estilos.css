@@ -86,3 +86,14 @@
 .modos{
     height: 13em;
 }
+
+.divPerfil{
+    bottom: 50px;
+    left: 50px;
+}
+
+.divPerfil img{
+    box-shadow:         0 0 10px 0 rgba(255, 255, 255, 0.5),
+    0 0 20px 5px rgba(255, 255, 255, 0.3),
+    0 0 30px 10px rgba(255, 255, 255, 0.2);
+}

@@ -1,9 +1,13 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./estilos.css"
 import Link from 'next/link'
+import CirclePerfil from '@/app/CirclePerfil'
+
+
 
 const Header = () => {
+
 
     const Salir = (e) => {
         e.preventDefault()
@@ -16,6 +20,8 @@ const Header = () => {
 
         e.target.classList.remove("Salida")
     }
+
+
 
     return (
         <>
@@ -40,9 +46,20 @@ const Header = () => {
                         </nav>
 
                     </div>
-
                 </header>
             </div>
+
+
+            <div className='w-[100%] h-[100%] fixed'>
+
+                <div className='absolute divPerfil'>
+
+
+                    <CirclePerfil/>
+                </div>
+            </div>
+
+
         </>
     )
 }
