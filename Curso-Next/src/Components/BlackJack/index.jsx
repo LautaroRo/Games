@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import "./estilos.css"
-
+import Image from 'next/image'
 
 const Blackjack = ({ cartas }) => {
     const [Crupier, setCrupier] = useState([])
@@ -483,8 +483,8 @@ const Blackjack = ({ cartas }) => {
                                             {FotosCrupier.map((jug,key) => {
                                                 return (
                                                     <div key={key} className='flex m-5 flex-row'>
-                                                        <img className={jug?.Id ? "flex w-56 h-56 rounded-[10px] absolute" : 'flex w-56 h-56'} src={jug?.Id ? "https://i.pinimg.com/originals/0e/5f/f1/0e5ff160c652d000ebb409a754653d23.jpg" : jug?.Imagen}></img>
-                                                        {jug?.Id ? <img className='flex w-56 h-56 rounded-[10px] relative Oculta' src={jug?.Imagen} /> : null}
+                                                        <Image quality={100} width={180} height={220} className={jug?.Id ? "flex rounded-[10px] absolute" : 'flex'} src={jug?.Id ? "https://i.pinimg.com/originals/0e/5f/f1/0e5ff160c652d000ebb409a754653d23.jpg" : jug?.Imagen}></Image>
+                                                        {jug?.Id ? <Image quality={100} width={180} height={220} className='flex rounded-[10px] relative Oculta' src={jug?.Imagen} /> : null}
                                                     </div>
                                                 )
                                             })}
@@ -532,7 +532,7 @@ const Blackjack = ({ cartas }) => {
                                             {FotosJugador.map((jug,key) => {
                                                 return (
                                                     <div key={key} className='flex m-5'>
-                                                        <img className='flex w-56 h-56' src={jug?.Imagen}></img>
+                                                        <Image quality={100} width={180} height={220} className='flex' src={jug?.Imagen}></Image>
                                                     </div>
                                                 )
                                             })}

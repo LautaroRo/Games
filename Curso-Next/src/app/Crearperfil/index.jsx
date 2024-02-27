@@ -49,7 +49,7 @@ const Crearperfil = () => {
             confirmarUsuario()
         }
 
-    }, [Verificacion])
+    }, [Verificacion, values])
 
     const registerUser = async () => {
 
