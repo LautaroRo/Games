@@ -13,6 +13,7 @@ const Blackjack = ({ cartas }) => {
     const [Mezclar, setMezclar] = useState(true)
     const [Decision, setDecision] = useState(false)
     const [Mostrar, setMostrar] = useState(false)
+    const [Finalizar, setFinalizar] = useState()
 
     const TraerCartas = () => {
 
@@ -28,6 +29,17 @@ const Blackjack = ({ cartas }) => {
 
 
 
+    const reiniciarJuego = () => {
+        setCrupier([]);
+        setJugador([]);
+        setFotosJugador([]);
+        setFotosCrupier([]);
+        setStart(false);
+        setCartas([]);
+        setMezclar(true);
+        setDecision(false);
+        setMostrar(false);
+    };
 
 
     const Random = (e) => {
@@ -354,8 +366,6 @@ const Blackjack = ({ cartas }) => {
 
             let totalCrupier = await Crupier[0]?.Valor
 
-            console.log(totalCrupier)
-
             if (totalCrupier < 17) {
                 TurnoCrupier()
             }
@@ -414,26 +424,27 @@ const Blackjack = ({ cartas }) => {
         const verificar = () => {
     
             if (Jugador[0]?.Valor < Crupier[0]?.Valor && Crupier[0]?.Valor < 22) {
-                console.log("Perdiste")
+                setFinalizar("perdiste")
             }
     
             else if (Jugador[0]?.Valor > Crupier[0]?.Valor && Jugador[0]?.Valor < 22) {
-                console.log("Ganaste")
+                setFinalizar("Ganaste")
             }
     
             else if (Jugador[0]?.Valor === Crupier[0]?.Valor) {
-                console.log("Empate")
+                setFinalizar("perdiste")
             }
     
             else if (Jugador[0]?.Valor > Crupier[0]?.Valor && Jugador[0]?.Valor > 21) {
                 console.log("Perdiste")
+                setFinalizar("perdiste")
             }
     
             else if (Jugador[0]?.Valor < Crupier[0]?.Valor && Crupier[0]?.Valor > 21) {
-                console.log("Ganaste")
+                setFinalizar("Ganaste")
             }
             else if( Jugador[0]?.Valor > 21 ){
-                console.log("Perdiste")
+                setFinalizar("perdiste")
             }
         }
     
@@ -491,7 +502,7 @@ const Blackjack = ({ cartas }) => {
 
 
 
-                                    {Decision
+                                    {Decision 
 
                                         ?
 
@@ -503,6 +514,7 @@ const Blackjack = ({ cartas }) => {
 
                                         null
                                     }
+
 
                                     <div style={{ bottom: "0" }} className='my-16 absolute w-full h-52 flex justify-center items-center flex-col'>
 
