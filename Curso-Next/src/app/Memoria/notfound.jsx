@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
-const notfound = () => {
+const Notfound = () => {
     const router = useRouter()
     return (
         <div className='flex justify-center items-center h-[100vh] flex-col'>
@@ -12,4 +12,4 @@ const notfound = () => {
     )
 }
 
-export default notfound
+export default Notfound

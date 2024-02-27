@@ -4,7 +4,7 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import "./estilos.css"
-const notfound = () => {
+const Notfound = () => {
 
     const router = useRouter()
     return (
@@ -18,4 +18,4 @@ const notfound = () => {
     )
 }
 
-export default notfound
+export default Notfound 

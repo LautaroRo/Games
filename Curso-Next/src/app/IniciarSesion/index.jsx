@@ -9,7 +9,7 @@ import { collection, getDocs } from 'firebase/firestore';
 
 const IniciarSesion = () => {
 
-    const [Perfiles, setPerfiles] = useState([])
+    const [Perfiles, setPerfiles] = useState(null)
     const [Firebase, setFirebase] = useState([])
     
     const Filtrar = (e) => {
@@ -24,6 +24,8 @@ const IniciarSesion = () => {
         if(filtrados.password === password){
             setPerfiles(filtrados)
             localStorage.setItem("userCredencial", JSON.stringify(filtrados))
+        }else{
+            console.log("error")
         }
     }
     useEffect(() => {

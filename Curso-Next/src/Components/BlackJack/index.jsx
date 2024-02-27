@@ -480,9 +480,9 @@ const Blackjack = ({ cartas }) => {
                                     <div className='my-16 w-full h-52 flex justify-center items-center flex-col'>
                                         <div className='flex flex-row'>
 
-                                            {FotosCrupier.map((jug) => {
+                                            {FotosCrupier.map((jug,key) => {
                                                 return (
-                                                    <div className='flex m-5 flex-row'>
+                                                    <div key={key} className='flex m-5 flex-row'>
                                                         <img className={jug?.Id ? "flex w-56 h-56 rounded-[10px] absolute" : 'flex w-56 h-56'} src={jug?.Id ? "https://i.pinimg.com/originals/0e/5f/f1/0e5ff160c652d000ebb409a754653d23.jpg" : jug?.Imagen}></img>
                                                         {jug?.Id ? <img className='flex w-56 h-56 rounded-[10px] relative Oculta' src={jug?.Imagen} /> : null}
                                                     </div>
@@ -520,18 +520,18 @@ const Blackjack = ({ cartas }) => {
 
 
 
-                                        {Jugador.map((jug) => {
+                                        {Jugador.map((jug,key) => {
                                             return (
-                                                <div >
+                                                <div key={key}>
                                                     <h3>{jug?.Valor}</h3>
                                                 </div>
                                             )
 
                                         })}
                                         <div className='flex flex-row'>
-                                            {FotosJugador.map((jug) => {
+                                            {FotosJugador.map((jug,key) => {
                                                 return (
-                                                    <div className='flex m-5'>
+                                                    <div key={key} className='flex m-5'>
                                                         <img className='flex w-56 h-56' src={jug?.Imagen}></img>
                                                     </div>
                                                 )

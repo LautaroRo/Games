@@ -161,9 +161,9 @@ const Title = () => {
                     Valor?.length > 0 && Valor.length < 20 && !Mezclar
                         ?
                         <>
-                            {Valor.map((Personaje) => {
+                            {Valor.map((Personaje, key) => {
                                 return (
-                                    <div className='flex align-middle CardGeneral '>
+                                    <div key={key} className='flex align-middle CardGeneral '>
                                         <div id={Personaje?.id} name={Personaje?.Nombre} onClick={DarVuelta} className='bg-white w-[200px] h-[250px] m-6 relative card'>
 
                                         </div>
