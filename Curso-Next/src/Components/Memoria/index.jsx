@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import "./estilos.css"
 import ObtenerApiMemoria from '../../app/ApiMemoria'
+import Link from 'next/link'
 
 const Title = () => {
 
@@ -147,7 +148,6 @@ const Title = () => {
     };
 
     useEffect(() => {
-        console.log(SegundoCount)
         if (SegundoCount % 6 === 0 && SegundoCount !== 0) {
             setActivar(true)
             setSegundoCount(0)
@@ -155,41 +155,58 @@ const Title = () => {
     }, [SegundoCount])
     return (
         <>
+            <nav className='h-10 w-full fixed top-0 p-12'>
+                <ul style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                    <li className='mx-5 cursor-pointer shadowli'>
+                        <Link href={"/"}>
+                            Inicio
+                        </Link>
+                    </li>
+                    <li className='mx-5 cursor-pointer shadowli'>
+                        <Link href={"/BlackJack"}>
+                            Blackjack
+                        </Link>
+                    </li>
+                </ul>
+            </nav>
+            <div className='flex flex-col h-[100vh] items-center justify-center'>
+                <div className='flex flex-wrap flex-row w-full items-center justify-center'>
+                    {
+                        Valor?.length > 0 && Valor.length < 20 && !Mezclar
+                            ?
+                            <>
+                                {Valor.map((Personaje, key) => {
+                                    return (
+                                        <div key={key} className='flex items-center CardGeneral '>
+                                            <div id={Personaje?.id} name={Personaje?.Nombre} onClick={DarVuelta} className='bg-white w-[150px] h-[250px] m-4 relative card'>
 
-            <div className='flex flex-wrap flex-row w-full align-middle justify-center h-full'>
-                {
-                    Valor?.length > 0 && Valor.length < 20 && !Mezclar
-                        ?
-                        <>
-                            {Valor.map((Personaje, key) => {
-                                return (
-                                    <div key={key} className='flex align-middle CardGeneral '>
-                                        <div id={Personaje?.id} name={Personaje?.Nombre} onClick={DarVuelta} className='bg-white w-[200px] h-[250px] m-6 relative card'>
+                                            </div>
+
+                                            <Image src={Personaje?.Foto} width={170} height={200} alt={Personaje?.Nombre} id={Personaje?.id2} className='flex justify-center absolute cartaDevuelta' />
 
                                         </div>
+                                    )
+                                })}
 
-                                        <Image src={Personaje?.Foto} width={200} height={250} alt={Personaje?.Nombre} id={Personaje?.id2} className='flex justify-center m-6 absolute cartaDevuelta' />
+                            </>
+                            :
+                            <div>Mezclando Cartas</div>
+                    }
+                    <div />
+                </div>
+                <div className='flex justify-center items-center my-10'>
+                    {
+                        !Mezclar && Activar
+                            ?
+                            <button className='shadowli' onClick={traerTodasPeliculas}>Jugar de nuevo?</button>
+                            :
+                            null
+                    }
 
-                                    </div>
-                                )
-                            })}
-
-                        </>
-                        :
-                        <div>Mezclando Cartas</div>
-                }
-
-                {
-                    !Mezclar && Activar
-                        ?
-                        <button onClick={traerTodasPeliculas}>Jugar de nuevo?</button>
-                        :
-                        null
-                }
+                </div>
             </div>
         </>
-    )
-
+    );
 }
 
-export default Title
+export default Title;

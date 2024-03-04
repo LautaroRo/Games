@@ -56,7 +56,9 @@ const IniciarSesion = () => {
         e.preventDefault()
 
         localStorage.removeItem("userCredencial")
-        setPerfiles([])
+        setPerfiles(null)
+
+        console.log(Perfiles)
     }
 
     return (
@@ -114,7 +116,7 @@ const IniciarSesion = () => {
                         <div className='flex justify-center flex-col items-center' style={{ zIndex: "100" }}>
                             <img style={{ borderRadius: "100%" }} className='h-[200px] w-[200px]' src={Perfiles.url}></img>
                             <h1 className='my-8'>{Perfiles.username}</h1>
-                            <button onClick={vaciar}>Cerrar Sesion</button>
+                            <button className='mx-5 cursor-pointer shadowliOut' onClick={vaciar}>Cerrar Sesion</button>
                         </div>
 
                     </>

@@ -13,3 +13,51 @@
     padding: 10px;
     transition: all .5s;
 }
+
+.buttonPlay{
+    padding: .5em 1em;
+    margin: 1em 2em;
+    border-radius: 10%;
+    transition: all .2s;
+}
+
+.more{
+    background-color: rgb(116, 241, 116);
+    color: black;
+
+}
+
+.more:hover{
+    background-color: rgb(35, 248, 35);
+}
+
+.less{
+    background-color: rgb(245, 96, 96);
+    color: black;
+}
+
+.less:hover{
+    background-color: rgb(236, 31, 31);
+}
+
+
+.buttonAgain{
+    background-color: grey;
+    padding: 1em 1em;
+    border-radius: 10%;
+    transition: all .3s;
+}
+.buttonAgain:hover{
+    background-color: rgb(233, 228, 228);
+    color: black
+}
+
+.shadowli:hover {
+    box-shadow: 0 0 10px #918e92, 0 0 20px #918e92, 0 0 40px #918e92;
+    background-color: #918e92;
+    border-radius: 10px;
+    border: none;
+    outline: none; 
+    padding: 10px;
+    transition: all .5s;
+}

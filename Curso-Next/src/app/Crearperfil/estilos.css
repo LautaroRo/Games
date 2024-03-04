@@ -8,6 +8,16 @@
     transition: all .5s;
 }
 
+
+.shadowliOut:hover {
+    box-shadow: 0 0 10px #ec2618, 0 0 20px #ec2618, 0 0 40px #ec2618;
+    background-color: #ec2618;
+    border-radius: 10px;
+    border: none;
+    outline: none; 
+    padding: 10px;
+    transition: all .5s;
+}
 .shadowlitwo:hover {
     box-shadow: 0 0 10px #1c2685, 0 0 20px #1c2685, 0 0 40px #1c2685;
     background-color: #1c2685;

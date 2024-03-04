@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import "./estilos.css"
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Blackjack = ({ cartas }) => {
     const [Crupier, setCrupier] = useState([])
@@ -16,7 +17,7 @@ const Blackjack = ({ cartas }) => {
     const [Finalizar, setFinalizar] = useState()
 
     const TraerCartas = () => {
-
+        console.log("hola")
         try {
             setCartas(cartas)
 
@@ -39,6 +40,15 @@ const Blackjack = ({ cartas }) => {
         setMezclar(true);
         setDecision(false);
         setMostrar(false);
+        setFinalizar(null)
+
+        setTimeout(() => {
+            setMezclar(false)
+
+        }, 2500);
+
+        TraerCartas()
+
     };
 
 
@@ -83,8 +93,8 @@ const Blackjack = ({ cartas }) => {
 
 
 
-    const Comenzar = (e) => {
-        e.preventDefault()
+    const Comenzar = () => {
+
         setStart(true)
         let valoresSeleccionados = []
         for (let i = 0; 4 > i; i++) {
@@ -242,7 +252,6 @@ const Blackjack = ({ cartas }) => {
 
         if (valoresSeleccionados[3]?.Tipo !== "ACE") {
             setTimeout(() => {
-                console.log(valoresSeleccionados[1])
                 if (valoresSeleccionados[1].Tipo !== "ACE") {
                     const suma = valoresSeleccionados[3]?.Valor + valoresSeleccionados[1]?.Valor
                     let valor = {
@@ -372,7 +381,7 @@ const Blackjack = ({ cartas }) => {
 
             setDecision(false);
             setMostrar(true);
-        }else{
+        } else {
             console.log("error")
         }
 
@@ -382,27 +391,34 @@ const Blackjack = ({ cartas }) => {
 
     useEffect(() => {
 
-        let totalCrupier = Crupier[0]?.Valor
+        const secondFunction = async () => {
+            let totalCrupier = await Crupier[0]?.Valor
 
-        if (totalCrupier < 17 && Mostrar) {
-            TurnoCrupier()
-        }else if(totalCrupier >= 17){
-            verificar()
+            if (await totalCrupier < 17 && Mostrar) {
+                TurnoCrupier()
+            } else if (totalCrupier >= 17) {
+                verificar()
+            }
+
         }
-        
 
-    }, [Crupier,FotosCrupier])
+        secondFunction()
+    }, [Crupier, FotosCrupier])
 
 
     useEffect(() => {
 
-        if (Jugador[0]?.Valor > 20) {
-            setTimeout(() => {
-                setDecision(false)
-                Plantar()
-            }, 1000);
+        const funcion = async () => {
+            if (await Jugador[0]?.Valor > 20) {
+                setTimeout(() => {
+                    setDecision(false)
+                    Plantar()
+                }, 1000);
 
+            }
         }
+
+        funcion()
     }, [Jugador])
 
 
@@ -421,38 +437,38 @@ const Blackjack = ({ cartas }) => {
 
 
 
-        const verificar = () => {
-    
-            if (Jugador[0]?.Valor < Crupier[0]?.Valor && Crupier[0]?.Valor < 22) {
-                setFinalizar("perdiste")
-            }
-    
-            else if (Jugador[0]?.Valor > Crupier[0]?.Valor && Jugador[0]?.Valor < 22) {
-                setFinalizar("Ganaste")
-            }
-    
-            else if (Jugador[0]?.Valor === Crupier[0]?.Valor) {
-                setFinalizar("perdiste")
-            }
-    
-            else if (Jugador[0]?.Valor > Crupier[0]?.Valor && Jugador[0]?.Valor > 21) {
-                console.log("Perdiste")
-                setFinalizar("perdiste")
-            }
-    
-            else if (Jugador[0]?.Valor < Crupier[0]?.Valor && Crupier[0]?.Valor > 21) {
-                setFinalizar("Ganaste")
-            }
-            else if( Jugador[0]?.Valor > 21 ){
-                setFinalizar("perdiste")
-            }
+    const verificar = () => {
+
+        console.log(Jugador[0]?.Valor, Crupier[0]?.Valor)
+        if (Jugador[0]?.Valor < Crupier[0]?.Valor && Crupier[0]?.Valor < 22) {
+            setFinalizar("Perdiste")
         }
-    
+
+        else if (Jugador[0]?.Valor > Crupier[0]?.Valor && Jugador[0]?.Valor < 22) {
+            setFinalizar("Ganaste")
+        }
+
+        else if (Jugador[0]?.Valor === Crupier[0]?.Valor) {
+            setFinalizar("Perdiste")
+        }
+
+        else if (Jugador[0]?.Valor > Crupier[0]?.Valor && Jugador[0]?.Valor > 21) {
+
+            setFinalizar("Perdiste")
+        }
+
+        else if (Jugador[0]?.Valor < Crupier[0]?.Valor && Crupier[0]?.Valor > 21) {
+            setFinalizar("Ganaste")
+        }
+        else if (Jugador[0]?.Valor > 21) {
+            setFinalizar("Perdiste")
+        }
+    }
+
 
     return (
 
         <>
-
             {
                 !Mezclar && Cartas?.length > 0
                     ?
@@ -466,6 +482,21 @@ const Blackjack = ({ cartas }) => {
                         position: "fixed",
                         top: "0"
                     }}>
+
+                        <nav className='h-10 w-full fixed top-0 p-12'>
+                            <ul style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                                <li className='mx-5 cursor-pointer shadowli'>
+                                    <Link href={"/"}>
+                                        Inicio
+                                    </Link>
+                                </li>
+                                <li className='mx-5 cursor-pointer shadowli'>
+                                    <Link href={"/Memoria"}>
+                                        Memoria
+                                    </Link>
+                                </li>
+                            </ul>
+                        </nav> 
                         <div className={Start ? "hidden" : 'flex items-center w-full justify-center'}>
                             <button className='flex w-48 h-16 bg-green-200 justify-center items-center' style={{ color: "black", borderRadius: "30px" }} onClick={Comenzar}>Jugar</button>
                         </div>
@@ -480,11 +511,11 @@ const Blackjack = ({ cartas }) => {
                                     <div className='my-16 w-full h-52 flex justify-center items-center flex-col'>
                                         <div className='flex flex-row'>
 
-                                            {FotosCrupier.map((jug,key) => {
+                                            {FotosCrupier.map((jug, key) => {
                                                 return (
                                                     <div key={key} className='flex m-5 flex-row'>
-                                                        <Image quality={100} width={180} height={220} className={jug?.Id ? "flex rounded-[10px] absolute" : 'flex'} src={jug?.Id ? "https://i.pinimg.com/originals/0e/5f/f1/0e5ff160c652d000ebb409a754653d23.jpg" : jug?.Imagen}></Image>
-                                                        {jug?.Id ? <Image quality={100} width={180} height={220} className='flex rounded-[10px] relative Oculta' src={jug?.Imagen} /> : null}
+                                                        <Image quality={100} width={180} height={220} alt={key} className={jug?.Id ? "flex rounded-[10px] absolute" : 'flex'} src={jug?.Id ? "https://i.pinimg.com/originals/0e/5f/f1/0e5ff160c652d000ebb409a754653d23.jpg" : jug?.Imagen}></Image>
+                                                        {jug?.Id ? <Image alt={key} quality={100} width={180} height={220} className='flex rounded-[10px] relative Oculta' src={jug?.Imagen} /> : null}
                                                     </div>
                                                 )
                                             })}
@@ -502,17 +533,31 @@ const Blackjack = ({ cartas }) => {
 
 
 
-                                    {Decision 
+                                    {Decision
 
                                         ?
 
-                                        <div>
-                                            <button onClick={Random}>+</button><h2 onClick={Plantar}>-</h2>
+                                        <div className='flex justify-center items-center flex-col h-[20%]'>
+                                            <button className='buttonPlay more' onClick={Random}>+</button>
+                                            <button className='buttonPlay less' onClick={Plantar}>-</button>
                                         </div>
 
                                         :
 
                                         null
+                                    }
+                                    {Finalizar && !Decision && Mostrar
+
+                                        ?
+
+                                        <div className='flex m-4'>
+                                            <h2 style={{ fontSize: "1.5em" }} className='flex m-4'>{Finalizar}</h2><button className='buttonAgain' onClick={reiniciarJuego}>Jugar de Nuevo</button>
+                                        </div>
+
+                                        :
+
+                                        null
+
                                     }
 
 
@@ -520,7 +565,7 @@ const Blackjack = ({ cartas }) => {
 
 
 
-                                        {Jugador.map((jug,key) => {
+                                        {Jugador.map((jug, key) => {
                                             return (
                                                 <div key={key}>
                                                     <h3>{jug?.Valor}</h3>
@@ -529,10 +574,10 @@ const Blackjack = ({ cartas }) => {
 
                                         })}
                                         <div className='flex flex-row'>
-                                            {FotosJugador.map((jug,key) => {
+                                            {FotosJugador.map((jug, key) => {
                                                 return (
                                                     <div key={key} className='flex m-5'>
-                                                        <Image quality={100} width={180} height={220} className='flex' src={jug?.Imagen}></Image>
+                                                        <Image alt={key} quality={100} width={180} height={220} className='flex' src={jug?.Imagen}></Image>
                                                     </div>
                                                 )
                                             })}

@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { auth } from '@/Components/Firebase/config';
 import { db } from '@/Components/Firebase/config';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./estilos.css"
 import imagen from "./../../assets/image.gif"
 import Link from 'next/link';
@@ -15,7 +17,6 @@ const Crearperfil = () => {
     const [Firebase, setFirebase] = useState([])
     const [Form, setForm] = useState(false)
     const [Verificacion, setVerificacion] = useState(false)
-
     useEffect(() => {
         const obtenerUsuarios = async () => {
             try {
@@ -29,38 +30,49 @@ const Crearperfil = () => {
 
         obtenerUsuarios()
     }, [])
-    useEffect(() => {
-        if (Verificacion === true) {
-            const confirmarUsuario = async () => {
 
-                await createUserWithEmailAndPassword(auth, values.email, values.password);
 
-                await addDoc(collection(db, "usuarios"), {
-                    username: values.username,
-                    password: values.password,
-                    email: values.email,
-                    url: values.url
-                });
 
-                localStorage.setItem("userCredencial", JSON.stringify(values))
-                setForm(true);
+    const confirmarUsuario = async () => {
+        try {
+
+
+            await createUserWithEmailAndPassword(auth, values.email, values.password);
+
+            await addDoc(collection(db, "usuarios"), {
+                username: values.username,
+                password: values.password,
+                email: values.email,
+                url: values.url
+            });
+
+            localStorage.setItem("userCredencial", JSON.stringify(values))
+            setForm(true);
+            toast.success(`Bienvenido ${values.username}`, {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            })
+        } catch (error) {
+            if (error.code === "auth/email-already-in-use") {
+                console.log("holaaaaa")
+                toast.warn(`El email ingresado ya esta en uso`, {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined
+                }
+                )
             }
-
-            confirmarUsuario()
         }
-
-    }, [Verificacion, values])
-
-    const registerUser = async () => {
-
-
-        const filter = Firebase.find(element => element.email == values.email)
-
-        if(filter === undefined){
-            setVerificacion(true)
-        }
-
-    };
+    }
 
 
     const handleChange = (e) => {
@@ -68,19 +80,16 @@ const Crearperfil = () => {
         setValues(prevState => ({ ...prevState, [name]: value }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit =  (e) => {
         e.preventDefault();
-
 
         e.target.email.value = ""
         e.target.password.value = ""
         e.target.username.value = ""
         e.target.url.value = ""
-        await registerUser();
 
+        confirmarUsuario()
     };
-
-
 
     return (
         <div className='flex h-full w-full justify-center' style={{
@@ -93,6 +102,7 @@ const Crearperfil = () => {
             display: "flex",
             flexDirection: "column"
         }}>
+            <ToastContainer />
             <nav className='h-10 w-full fixed top-0 p-12'>
                 <ul style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                     <li className='mx-5 cursor-pointer shadowli'>
@@ -119,9 +129,11 @@ const Crearperfil = () => {
                     </form>
                     :
                     <>
-                        <div className='flex justify-center items-center'>
+                        <div className='flex justify-center items-center flex-col'>
+                            <h1 className='flex m-7'>Perfil Creado!!!</h1>
                             <img style={{ borderRadius: "100%", height: "15em", width: "15em" }} src={values?.url}></img>
-                            <h1>{values?.username}</h1>
+                            <h1 className='flex m-7'>{values?.username}</h1>
+                            <Link className='mx-5 cursor-pointer shadowli' href={"/"}>Ir a inicio</Link>
                         </div>
                     </>
             }
